@@ -6,38 +6,17 @@ function Form(props) {
   const [expectedReturn, setExpectedReturn] = useState(0)
   const [duration, setDuration] = useState(0)
 
-  const calculateHandler = (userInput) => {
-    // Should be triggered when form is submitted
-    // You might not directly want to bind it to the submit event on the form though...
-
-    const yearlyData = []; // per-year results
-
-    let savings = currentSavings; // feel free to change the shape of this input object!
-    const returns = expectedReturn / 100;
-
-    // The below code calculates yearly results (total savings, interest etc)
-    for (let i = 0; i < duration; i++) {
-      const yearlyInterest = currentSavings * returns;
-      savings += yearlyInterest + yearlyContribution;
-      yearlyData.push({
-        // feel free to change the shape of the data pushed to the array!
-        year: i + 1,
-        yearlyInterest: yearlyInterest,
-        savingsEndOfYear: currentSavings,
-        yearlyContribution: yearlyContribution,
-      });
-    }
-
-    // do something with yearlyData ...
-    props.storeYearlyData(yearlyData)
-  };
-
   const formSubmitHandler = (event) => {
     event.preventDefault();
     if (!currentSavings || !yearlyContribution || !expectedReturn || !duration) {
       return
     }
-    calculateHandler()
+    props.onFormData({
+      currentSavings: Number(currentSavings),
+      yearlyContribution: Number(yearlyContribution),
+      expectedReturn: Number(expectedReturn),
+      duration: Number(duration)
+    })
   };
   
   const formResetHandler = () => {
@@ -45,7 +24,12 @@ function Form(props) {
     setYearlyContribution(0)
     setExpectedReturn(0)
     setDuration(0)
-    props.storeYearlyData([])
+    props.onFormData({
+      currentSavings: Number(currentSavings),
+      yearlyContribution: Number(yearlyContribution),
+      expectedReturn: Number(expectedReturn),
+      duration: Number(duration)
+    })
   };
 
   return (

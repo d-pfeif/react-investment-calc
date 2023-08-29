@@ -5,11 +5,37 @@ import Form from "./components/Form"
 import Table from "./components/Table"
 
 function App() {
-  const [yearlyData, setYearlyData] = useState()
+  const [yearlyData, setYearlyData] = useState([])
+  
+  const calculateHandler = (formData) => {
+    const yearlyData = []; // per-year results
 
-  const handleStoreYearlyData = (data) => {
-    setYearlyData(data)
-    console.log(yearlyData);
+    let savings = formData.currentSavings; // feel free to change the shape of this input object!
+    let totalInvestedCapitol = 0
+    let totalInterestGained = 0
+    const expectedReturns = formData.expectedReturn / 100;
+
+    // The below code calculates yearly results (total savings, interest etc)
+    for (let i = 0; i < formData.duration; i++) {
+      const yearlyInterest = savings * expectedReturns;
+      savings += yearlyInterest + formData.yearlyContribution;
+      totalInvestedCapitol += formData.yearlyContribution 
+      totalInterestGained += yearlyInterest 
+      yearlyData.push({
+        year: i + 1,
+        savingsEndOfYear: Math.round(savings * 100)/100,
+        yearlyInterest: Math.round(yearlyInterest*100)/100,
+        totalInterestGained: Math.round(totalInterestGained*100)/100,
+        yearlyContribution: totalInvestedCapitol,
+      });
+    }
+
+    // do something with yearlyData ...
+    setYearlyData(yearlyData)
+  };
+
+  const handleFormData = (data) => {
+    calculateHandler(data)
   }
 
   return (
@@ -19,11 +45,8 @@ function App() {
         <h1>Investment Calculator</h1>
       </header>
 
-      <Form storeYearlyData={handleStoreYearlyData} />
-      
-      {/* Todo: Show below table conditionally (only once result data is available) */}
-      {/* Show fallback text if no data is available */}
-      {/* <Table /> */}
+      <Form onFormData={handleFormData} />
+      <Table yearlyData={yearlyData} />
       
     </div>
   );

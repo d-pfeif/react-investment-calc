@@ -1,4 +1,7 @@
-function Table() {
+import { useState } from "react"
+import TableRow from "./TableRow";
+
+function Table(props) {
   return (
     <table className="result">
       <thead>
@@ -11,13 +14,16 @@ function Table() {
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>YEAR NUMBER</td>
-          <td>TOTAL SAVINGS END OF YEAR</td>
-          <td>INTEREST GAINED IN YEAR</td>
-          <td>TOTAL INTEREST GAINED</td>
-          <td>TOTAL INVESTED CAPITAL</td>
-        </tr>
+        {props.yearlyData.map((x) => (
+          <TableRow
+            key={x.year}
+            year={x.year}
+            savingsEndOfYear={x.savingsEndOfYear}
+            yearlyInterest={x.yearlyInterest}
+            yearlyContribution={x.yearlyContribution}
+            totalInterestGained={x.totalInterestGained}
+          />
+        ))}
       </tbody>
     </table>
   );
