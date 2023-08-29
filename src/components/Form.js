@@ -25,10 +25,10 @@ function Form(props) {
     setExpectedReturn(0)
     setDuration(0)
     props.onFormData({
-      currentSavings: Number(currentSavings),
-      yearlyContribution: Number(yearlyContribution),
-      expectedReturn: Number(expectedReturn),
-      duration: Number(duration)
+      currentSavings: 0,
+      yearlyContribution: 0,
+      expectedReturn: 0,
+      duration: 0
     })
   };
 
